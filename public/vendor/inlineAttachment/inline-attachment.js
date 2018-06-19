@@ -154,7 +154,7 @@
      * will be replaced by the urlText, the {filename} tag will be replaced
      * by the filename that has been returned by the server
      */
-    urlText: "![]({filename})",
+    urlText: "<img src=\"{filename}\" referrerpolicy=\"unsafe-url\">",
 
     /**
      * Text which will be used when uploading has failed

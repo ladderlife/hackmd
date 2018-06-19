@@ -17,6 +17,8 @@ whiteList['li'] = ['value']
 whiteList['style'] = []
 // allow kbd tag
 whiteList['kbd'] = []
+// allow img with some safe attributes
+whiteList['img'] = ['referrerpolicy', 'width', 'height', 'src']
 // allow ifram tag with some safe attributes
 whiteList['iframe'] = ['allowfullscreen', 'name', 'referrerpolicy', 'sandbox', 'src', 'width', 'height']
 // allow summary tag
