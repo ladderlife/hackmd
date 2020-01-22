@@ -341,6 +341,29 @@ $('.ui-open-history').bind('change', e => {
   reader.readAsText(file)
 })
 
+$('.ui-show-all-history').click(() => {
+  const lastTags = $('.ui-use-tags').select2('val')
+  $('.ui-use-tags').select2('val', '')
+  historyList.filter()
+  const lastKeyword = $('.search').val()
+  $('.search').val('')
+  historyList.search()
+  $('#history-list').slideUp('fast')
+  $('.pagination').hide()
+
+  resetCheckAuth()
+  historyList.clear()
+  parseHistoryAll(historyList, (list, notehistory) => {
+    parseHistoryCallback(list, notehistory)
+    $('.ui-use-tags').select2('val', lastTags)
+    $('.ui-use-tags').trigger('change')
+    historyList.search(lastKeyword)
+    $('.search').val(lastKeyword)
+    checkHistoryList()
+    $('#history-list').slideDown('fast')
+  })
+})
+
 $('.ui-clear-history').click(() => {
   $('.ui-delete-modal-msg').text('Do you really want to clear all history?')
   $('.ui-delete-modal-item').html('There is no turning back.')

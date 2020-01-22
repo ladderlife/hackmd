@@ -263,6 +263,17 @@ export function parseHistory (list, callback) {
     )
 }
 
+export function parseHistoryAll(list, callback) {
+  checkIfAuth(
+    () => {
+      parseServerToHistoryAll(list, callback)
+    },
+    () => {
+      parseStorageToHistory(list, callback)
+    }
+  )
+}
+
 export function parseServerToHistory (list, callback) {
   $.get(`${serverurl}/history`)
         .done(data => {
@@ -273,6 +284,18 @@ export function parseServerToHistory (list, callback) {
         .fail((xhr, status, error) => {
           console.error(xhr.responseText)
         })
+}
+
+export function parseServerToHistory(list, callback) {
+  $.get(`${serverurl}/history/all`)
+    .done(data => {
+      if (data.history) {
+        parseToHistory(list, data.history, callback)
+      }
+    })
+    .fail((xhr, status, error) => {
+      console.error(xhr.responseText)
+    })
 }
 
 function parseCookieToHistory (list, callback) {
