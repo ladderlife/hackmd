@@ -286,18 +286,6 @@ export function parseServerToHistory (list, callback) {
         })
 }
 
-export function parseServerToHistory(list, callback) {
-  $.get(`${serverurl}/history/all`)
-    .done(data => {
-      if (data.history) {
-        parseToHistory(list, data.history, callback)
-      }
-    })
-    .fail((xhr, status, error) => {
-      console.error(xhr.responseText)
-    })
-}
-
 function parseCookieToHistory (list, callback) {
   const notehistory = Cookies.getJSON('notehistory')
   parseToHistory(list, notehistory, callback)
