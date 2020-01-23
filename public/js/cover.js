@@ -20,6 +20,7 @@ import {
     getHistory,
     getStorageHistory,
     parseHistory,
+    parseHistoryAll,
     parseServerToHistory,
     parseStorageToHistory,
     postHistoryToServer,
