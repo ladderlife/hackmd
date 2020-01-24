@@ -263,6 +263,17 @@ export function parseHistory (list, callback) {
     )
 }
 
+export function parseHistoryAll(list, callback) {
+  checkIfAuth(
+    () => {
+      parseServerToHistoryAll(list, callback)
+    },
+    () => {
+      parseStorageToHistory(list, callback)
+    }
+  )
+}
+
 export function parseServerToHistory (list, callback) {
   $.get(`${serverurl}/history`)
         .done(data => {
@@ -273,6 +284,18 @@ export function parseServerToHistory (list, callback) {
         .fail((xhr, status, error) => {
           console.error(xhr.responseText)
         })
+}
+
+export function parseServerToHistoryAll(list, callback) {
+  $.get(`${serverurl}/history/all`)
+    .done(data => {
+      if (data.history) {
+        parseToHistory(list, data.history, callback)
+      }
+    })
+    .fail((xhr, status, error) => {
+      console.error(xhr.responseText)
+    })
 }
 
 function parseCookieToHistory (list, callback) {
@@ -307,7 +330,11 @@ function parseToHistory (list, notehistory, callback) {
         console.error(err)
       }
             // parse time to timestamp and fromNow
-      const timestamp = (typeof notehistory[i].time === 'number' ? moment(notehistory[i].time) : moment(notehistory[i].time, 'MMMM Do YYYY, h:mm:ss a'))
+      let timestamp = (typeof notehistory[i].time === 'number' ? moment(notehistory[i].time) : moment(notehistory[i].time, 'MMMM Do YYYY, h:mm:ss a'))
+      if (!timestamp.isValid()) {
+        // try harder
+        timestamp = moment(notehistory[i].time)
+      }
       notehistory[i].timestamp = timestamp.valueOf()
       notehistory[i].fromNow = timestamp.fromNow()
       notehistory[i].time = timestamp.format('llll')

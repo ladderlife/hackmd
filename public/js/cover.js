@@ -20,6 +20,7 @@ import {
     getHistory,
     getStorageHistory,
     parseHistory,
+    parseHistoryAll,
     parseServerToHistory,
     parseStorageToHistory,
     postHistoryToServer,
@@ -339,6 +340,29 @@ $('.ui-open-history').bind('change', e => {
     $('.ui-open-history').replaceWith($('.ui-open-history').val('').clone(true))
   }
   reader.readAsText(file)
+})
+
+$('.ui-show-all-history').click(() => {
+  const lastTags = $('.ui-use-tags').select2('val')
+  $('.ui-use-tags').select2('val', '')
+  historyList.filter()
+  const lastKeyword = $('.search').val()
+  $('.search').val('')
+  historyList.search()
+  $('#history-list').slideUp('fast')
+  $('.pagination').hide()
+
+  resetCheckAuth()
+  historyList.clear()
+  parseHistoryAll(historyList, (list, notehistory) => {
+    parseHistoryCallback(list, notehistory)
+    $('.ui-use-tags').select2('val', lastTags)
+    $('.ui-use-tags').trigger('change')
+    historyList.search(lastKeyword)
+    $('.search').val(lastKeyword)
+    checkHistoryList()
+    $('#history-list').slideDown('fast')
+  })
 })
 
 $('.ui-clear-history').click(() => {
