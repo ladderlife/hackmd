@@ -330,7 +330,11 @@ function parseToHistory (list, notehistory, callback) {
         console.error(err)
       }
             // parse time to timestamp and fromNow
-      const timestamp = (typeof notehistory[i].time === 'number' ? moment(notehistory[i].time) : moment(notehistory[i].time, 'MMMM Do YYYY, h:mm:ss a'))
+      let timestamp = (typeof notehistory[i].time === 'number' ? moment(notehistory[i].time) : moment(notehistory[i].time, 'MMMM Do YYYY, h:mm:ss a'))
+      if (!timestamp.isValid()) {
+        // try harder
+        timestamp = moment(notehistory[i].time)
+      }
       notehistory[i].timestamp = timestamp.valueOf()
       notehistory[i].fromNow = timestamp.fromNow()
       notehistory[i].time = timestamp.format('llll')
